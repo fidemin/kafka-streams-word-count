@@ -53,7 +53,14 @@ public class FavoriteColorApp {
         favoriteColor.toStream().to("favorite-color-output", Produced.with(Serdes.String(), Serdes.Long()));
 
         KafkaStreams streams = new KafkaStreams(builder.build(), config);
+
+        // only for dev. not for production
+        // Delete the application's local state.
+        // Note: In real application you'd call `cleanUp()` only under certain conditions.
+        // See Confluent Docs for more details:
+        // https://docs.confluent.io/current/streams/developer-guide/app-reset-tool.html#step-2-reset-the-local-environments-of-your-application-instances
         streams.cleanUp();
+
         streams.start();
 
         // add shutdown hook
